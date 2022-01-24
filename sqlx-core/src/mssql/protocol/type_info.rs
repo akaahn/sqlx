@@ -517,6 +517,10 @@ impl TypeInfo {
 
             DataType::Guid => "GUID",
 
+            DataType::DateTime
+            | DataType::DateTimeN
+            | DataType::DateTime2N => "DATETIME",
+
             _ => unimplemented!("name: unsupported data type {:?}", self.ty),
         }
     }
@@ -578,6 +582,12 @@ impl TypeInfo {
 
             DataType::Guid => {
                 s.push_str("guid");
+            }
+
+            DataType::DateTime
+            | DataType::DateTimeN
+            | DataType::DateTime2N => {
+                s.push_str("datetime");
             }
 
             DataType::BitN => {
