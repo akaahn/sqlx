@@ -1,16 +1,12 @@
-use std::io::Write;
-use byteorder::{BigEndian, ByteOrder, LittleEndian};
 use crate::decode::Decode;
 use crate::encode::{Encode, IsNull};
 use crate::error::BoxDynError;
 use crate::mssql::protocol::type_info::{DataType, TypeInfo};
 use crate::mssql::{Mssql, MssqlTypeInfo, MssqlValueRef};
+use byteorder::{ByteOrder, LittleEndian};
 
 use crate::types::Type;
-use chrono::{
-    DateTime, Duration, FixedOffset, Local, NaiveDate, NaiveDateTime, Offset, TimeZone, Utc,
-};
-use crate::database::{HasArguments, HasValueRef};
+use chrono::{DateTime, Duration, Local, NaiveDate, NaiveDateTime, TimeZone, Utc};
 
 impl Type<Mssql> for DateTime<Utc> {
     fn type_info() -> MssqlTypeInfo {
@@ -70,8 +66,7 @@ impl Encode<'_, Mssql> for NaiveDateTime {
 impl<'r> Decode<'r, Mssql> for NaiveDateTime {
     fn decode(value: MssqlValueRef<'r>) -> Result<Self, BoxDynError> {
         let buf = value.as_bytes()?;
-        let epoch = NaiveDate::from_ymd(1900, 1, 1)
-            .and_hms(0, 0, 0);
+        let epoch = NaiveDate::from_ymd(1900, 1, 1).and_hms(0, 0, 0);
 
         let days_since = &buf[..4];
         let days_since = LittleEndian::read_i32(days_since) as i64;

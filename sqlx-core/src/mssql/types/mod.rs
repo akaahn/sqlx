@@ -3,11 +3,11 @@ use crate::mssql::protocol::type_info::{DataType, TypeInfo};
 use crate::mssql::{Mssql, MssqlTypeInfo};
 
 mod bool;
+mod datetime;
 mod float;
 mod guid;
 mod int;
 mod str;
-mod datetime;
 mod timestamp;
 
 impl<'q, T: 'q + Encode<'q, Mssql>> Encode<'q, Mssql> for Option<T> {

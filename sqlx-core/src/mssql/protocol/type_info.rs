@@ -5,7 +5,6 @@ use encoding_rs::Encoding;
 use crate::encode::{Encode, IsNull};
 use crate::error::Error;
 use crate::mssql::Mssql;
-use crate::mssql::protocol::type_info::DataType::BigBinary;
 
 bitflags! {
     #[cfg_attr(feature = "offline", derive(serde::Serialize, serde::Deserialize))]
@@ -582,8 +581,6 @@ impl TypeInfo {
                     s.push_str("(max)");
                 }
             }
-
-
 
             DataType::Guid => {
                 s.push_str("uniqueidentifier");
