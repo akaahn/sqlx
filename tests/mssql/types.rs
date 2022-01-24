@@ -48,3 +48,8 @@ test_type!(uuid<sqlx::types::Uuid>(Mssql,
     "CAST('00000000-0000-0000-0000-000000000000' AS uniqueidentifier)"
         == sqlx::types::Uuid::parse_str("00000000-0000-0000-0000-000000000000").unwrap()
 ));
+
+test_type!(chrono_date<NaiveDate>(MySql,
+    "CAST('1999-03-04 23:17:00.000' AS DATETIME)" == NaiveDate::from_ymd(1999, 03, 04).and_hms(23, 17, 0)
+    "CAST('2021-10-29 13:48:53.000' AS DATETIME)" == NaiveDate::from_ymd(2021, 10, 29).and_hms(13, 48, 53),
+));
