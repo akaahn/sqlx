@@ -5,6 +5,7 @@ use encoding_rs::Encoding;
 use crate::encode::{Encode, IsNull};
 use crate::error::Error;
 use crate::mssql::Mssql;
+use crate::mssql::protocol::type_info::DataType::BigBinary;
 
 bitflags! {
     #[cfg_attr(feature = "offline", derive(serde::Serialize, serde::Deserialize))]
@@ -515,11 +516,11 @@ impl TypeInfo {
             DataType::BigChar => "BIGCHAR",
             DataType::NChar => "NCHAR",
 
+            DataType::BigBinary => "BIGBINARY",
+
             DataType::Guid => "GUID",
 
-            DataType::DateTime
-            | DataType::DateTimeN
-            | DataType::DateTime2N => "DATETIME",
+            DataType::DateTime => "DATETIME",
 
             _ => unimplemented!("name: unsupported data type {:?}", self.ty),
         }
@@ -557,7 +558,8 @@ impl TypeInfo {
             | DataType::BigVarChar
             | DataType::Char
             | DataType::BigChar
-            | DataType::NChar => {
+            | DataType::NChar
+            | DataType::BigBinary => {
                 // name
                 s.push_str(match self.ty {
                     DataType::VarChar => "varchar",
@@ -566,6 +568,7 @@ impl TypeInfo {
                     DataType::Char => "char",
                     DataType::BigChar => "bigchar",
                     DataType::NChar => "nchar",
+                    DataType::BigBinary => "bigbinary",
 
                     _ => unreachable!(),
                 });
@@ -580,13 +583,13 @@ impl TypeInfo {
                 }
             }
 
+
+
             DataType::Guid => {
                 s.push_str("guid");
             }
 
-            DataType::DateTime
-            | DataType::DateTimeN
-            | DataType::DateTime2N => {
+            DataType::DateTime => {
                 s.push_str("datetime");
             }
 
