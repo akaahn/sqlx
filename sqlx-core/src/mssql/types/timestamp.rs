@@ -21,7 +21,7 @@ impl Encode<'_, Mssql> for [u8; 8] {
 }
 
 impl<'r> Decode<'r, Mssql> for [u8; 8] {
-    fn decode(value: MssqlValueRef) -> Result<Self, BoxDynError> {
+    fn decode(value: MssqlValueRef<'r>) -> Result<Self, BoxDynError> {
         let bytes = value.as_bytes()?;
         assert_eq!(bytes.len(), 8);
 

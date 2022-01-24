@@ -25,7 +25,7 @@ impl Encode<'_, Mssql> for DateTime<Utc> {
 }
 
 impl<'r> Decode<'r, Mssql> for DateTime<Utc> {
-    fn decode(value: MssqlValueRef) -> Result<Self, BoxDynError> {
+    fn decode(value: MssqlValueRef<'r>) -> Result<Self, BoxDynError> {
         let naive = <NaiveDateTime as Decode<Mssql>>::decode(value)?;
         Ok(Utc.from_utc_datetime(&naive))
     }
@@ -44,7 +44,7 @@ impl Encode<'_, Mssql> for DateTime<Local> {
 }
 
 impl<'r> Decode<'r, Mssql> for DateTime<Local> {
-    fn decode(value: MssqlValueRef) -> Result<Self, BoxDynError> {
+    fn decode(value: MssqlValueRef<'r>) -> Result<Self, BoxDynError> {
         let local = <DateTime<Utc> as Decode<Mssql>>::decode(value)?.with_timezone(&Local);
         Ok(local)
     }
